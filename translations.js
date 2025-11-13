@@ -6,7 +6,8 @@ const translations = {
             courses: "Courses",
             vlogs: "Tech Vlogs",
             downloads: "Downloads",
-            contact: "Contact"
+            contact: "Contact",
+            platform: "Learning Platform"
         },
         hero: {
             title: "Empowering Your IT Journey",
@@ -81,7 +82,8 @@ const translations = {
             courses: "Kursy",
             vlogs: "Tech Vlogi",
             downloads: "Pobierz",
-            contact: "Kontakt"
+            contact: "Kontakt",
+            platform: "Platforma edukacyjna"
         },
         hero: {
             title: "Wspieramy Twoją Podróż IT",

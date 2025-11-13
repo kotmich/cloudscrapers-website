@@ -503,6 +503,7 @@
     cursor: pointer;
     transition: var(--transition);
     font-weight: 600;
+    color: var(--text-dark);
 }
 
 .filter-btn:hover,
