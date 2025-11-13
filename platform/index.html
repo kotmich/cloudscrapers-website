@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Platform | CloudScrapers</title>
+    <link rel="stylesheet" href="platform.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="../index.html" style="text-decoration: none; color: inherit;">
+                    <span class="logo-text">CloudScrapers</span>
+                </a>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="../index.html" class="nav-link">Home</a></li>
+                <li><a href="index.html" class="nav-link active">Courses</a></li>
+                <li><a href="../index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <div id="userMenuContainer"></div>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="platform-container">
+        <h1 class="section-title">Browse Our Courses</h1>
+        <p class="section-subtitle" style="text-align: center; max-width: 700px; margin: 0 auto 2rem;">
+            Explore our comprehensive library of IT training courses. All users can browse, but you need to be logged in to access course content.
+        </p>
+
+        <!-- Filters -->
+        <div class="filters" id="filters">
+            <button class="filter-btn active" data-filter="all">All Courses</button>
+            <button class="filter-btn" data-filter="free">Free Courses</button>
+            <button class="filter-btn" data-filter="Cloud Computing">Cloud Computing</button>
+            <button class="filter-btn" data-filter="Security">Security</button>
+            <button class="filter-btn" data-filter="Programming">Programming</button>
+            <button class="filter-btn" data-filter="Networking">Networking</button>
+        </div>
+
+        <!-- Courses Grid -->
+        <div class="courses-grid" id="coursesGrid"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 CloudScrapers Michał Kot IT Consulting. All rights reserved.</p>
+            <p>Learn, Grow, Succeed with our expert-led courses.</p>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script src="courses-data.js"></script>
+    <script>
+        // Initialize platform
+        function initPlatform() {
+            renderUserMenu();
+            renderCourses();
+            setupFilters();
+        }
+
+        // Render user menu
+        function renderUserMenu() {
+            const container = document.getElementById('userMenuContainer');
+            const user = auth.getCurrentUser();
+
+            if (user) {
+                const initials = user.firstName[0] + user.lastName[0];
+                container.innerHTML = `
+                    <div class="user-menu">
+                        <div class="user-avatar" id="userAvatar">${initials}</div>
+                        <div class="user-dropdown" id="userDropdown">
+                            <div class="user-dropdown-item">
+                                <strong>${user.firstName} ${user.lastName}</strong><br>
+                                <small style="color: var(--text-gray)">${user.email}</small>
+                            </div>
+                            <div class="user-dropdown-item" onclick="window.location.href='../index.html'">
+                                Main Website
+                            </div>
+                            <div class="user-dropdown-item" onclick="logout()">
+                                Logout
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Toggle dropdown
+                document.getElementById('userAvatar').addEventListener('click', () => {
+                    document.getElementById('userDropdown').classList.toggle('active');
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('.user-menu')) {
+                        document.getElementById('userDropdown').classList.remove('active');
+                    }
+                });
+            } else {
+                container.innerHTML = `
+                    <a href="login.html" style="text-decoration: none;">
+                        <button style="padding: 10px 25px; background: var(--gradient-primary); color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: 600;">
+                            Login
+                        </button>
+                    </a>
+                `;
+            }
+        }
+
+        // Logout function
+        function logout() {
+            auth.logout();
+            window.location.reload();
+        }
+
+        // Render courses
+        function renderCourses(filter = 'all') {
+            const grid = document.getElementById('coursesGrid');
+            let courses = coursesData;
+
+            if (filter === 'free') {
+                courses = getFreeCourses();
+            } else if (filter !== 'all') {
+                courses = getCoursesByCategory(filter);
+            }
+
+            grid.innerHTML = courses.map(course => `
+                <div class="course-card" onclick="window.location.href='course.html?id=${course.id}'">
+                    <div class="course-thumbnail">
+                        ${getCategoryIcon(course.category)}
+                        <span class="course-badge ${course.isFree ? 'free' : ''}">${course.isFree ? 'FREE' : course.price + ' PLN'}</span>
+                    </div>
+                    <div class="course-info">
+                        <div class="course-category">${course.category}</div>
+                        <h3 class="course-title">${course.title}</h3>
+                        <p class="course-description">${course.description}</p>
+                        <div class="course-meta">
+                            <div class="course-stats">
+                                <span>⭐ ${course.rating}</span>
+                                <span>👥 ${course.enrolledStudents}</span>
+                                <span>📚 ${course.lessons} lessons</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Get category icon
+        function getCategoryIcon(category) {
+            const icons = {
+                'Cloud Computing': '☁️',
+                'Security': '🔒',
+                'Programming': '💻',
+                'Networking': '🌐'
+            };
+            return `<span style="font-size: 4rem;">${icons[category] || '📚'}</span>`;
+        }
+
+        // Setup filters
+        function setupFilters() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    // Add active to clicked
+                    btn.classList.add('active');
+                    // Filter courses
+                    const filter = btn.getAttribute('data-filter');
+                    renderCourses(filter);
+                });
+            });
+        }
+
+        // Hamburger menu
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+
+        hamburger?.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', initPlatform);
+    </script>
+</body>
+</html>

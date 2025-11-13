@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course | CloudScrapers Learning Platform</title>
+    <link rel="stylesheet" href="platform.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="../index.html" style="text-decoration: none; color: inherit;">
+                    <span class="logo-text">CloudScrapers</span>
+                </a>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="../index.html" class="nav-link">Home</a></li>
+                <li><a href="index.html" class="nav-link active">Courses</a></li>
+                <li><a href="../index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <div id="userMenuContainer"></div>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Course Header -->
+    <div class="course-detail-header" id="courseHeader">
+        <!-- Populated by JavaScript -->
+    </div>
+
+    <!-- Course Body -->
+    <div class="course-body">
+        <div class="main-content">
+            <!-- Video Player or Locked Overlay -->
+            <div id="videoContainer"></div>
+
+            <!-- Tabs -->
+            <div class="tabs" style="margin-top: 2rem;">
+                <button class="tab active" onclick="switchTab('overview')">Overview</button>
+                <button class="tab" onclick="switchTab('syllabus')">Syllabus</button>
+                <button class="tab" onclick="switchTab('instructor')">Instructor</button>
+            </div>
+
+            <!-- Tab Contents -->
+            <div id="overview-content" class="tab-content active">
+                <h3 style="margin-bottom: 1rem;">About this course</h3>
+                <p id="courseOverviewText" style="color: var(--text-gray); line-height: 1.8;"></p>
+            </div>
+
+            <div id="syllabus-content" class="tab-content">
+                <h3 style="margin-bottom: 1.5rem;">Course Syllabus</h3>
+                <ul class="syllabus-list" id="syllabusList"></ul>
+            </div>
+
+            <div id="instructor-content" class="tab-content">
+                <h3 style="margin-bottom: 1rem;">Instructor</h3>
+                <div style="display: flex; align-items: center; gap: 1.5rem; margin-top: 1.5rem;">
+                    <div class="user-avatar" style="width: 80px; height: 80px; font-size: 1.5rem;">MK</div>
+                    <div>
+                        <h4>Michał Kot</h4>
+                        <p style="color: var(--text-gray);">IT Consultant & Trainer</p>
+                        <p style="color: var(--text-gray); margin-top: 0.5rem;">Expert in Cloud, Security, Networking & Programming with years of industry experience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="course-sidebar">
+            <div class="enroll-card" id="enrollCard">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" style="margin-top: 4rem;">
+        <div class="container">
+            <p>&copy; 2025 CloudScrapers Michał Kot IT Consulting. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script src="courses-data.js"></script>
+    <script>
+        let currentCourse = null;
+
+        // Get course ID from URL
+        function getCourseIdFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return parseInt(params.get('id'));
+        }
+
+        // Initialize course page
+        function initCoursePage() {
+            const courseId = getCourseIdFromURL();
+            currentCourse = getCourseById(courseId);
+
+            if (!currentCourse) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            renderUserMenu();
+            renderCourseHeader();
+            renderVideoPlayer();
+            renderEnrollCard();
+            renderSyllabus();
+            renderOverview();
+        }
+
+        // Render user menu (same as index.html)
+        function renderUserMenu() {
+            const container = document.getElementById('userMenuContainer');
+            const user = auth.getCurrentUser();
+
+            if (user) {
+                const initials = user.firstName[0] + user.lastName[0];
+                container.innerHTML = `
+                    <div class="user-menu">
+                        <div class="user-avatar" id="userAvatar">${initials}</div>
+                        <div class="user-dropdown" id="userDropdown">
+                            <div class="user-dropdown-item">
+                                <strong>${user.firstName} ${user.lastName}</strong><br>
+                                <small style="color: var(--text-gray)">${user.email}</small>
+                            </div>
+                            <div class="user-dropdown-item" onclick="window.location.href='index.html'">
+                                All Courses
+                            </div>
+                            <div class="user-dropdown-item" onclick="logout()">
+                                Logout
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('userAvatar').addEventListener('click', () => {
+                    document.getElementById('userDropdown').classList.toggle('active');
+                });
+            } else {
+                container.innerHTML = `
+                    <a href="login.html" style="text-decoration: none;">
+                        <button style="padding: 10px 25px; background: var(--gradient-primary); color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: 600;">
+                            Login
+                        </button>
+                    </a>
+                `;
+            }
+        }
+
+        // Render course header
+        function renderCourseHeader() {
+            const header = document.getElementById('courseHeader');
+            header.innerHTML = `
+                <div class="course-detail-content">
+                    <div class="breadcrumb">
+                        <a href="index.html">Courses</a> / <span>${currentCourse.category}</span>
+                    </div>
+                    <h1 class="course-detail-title">${currentCourse.title}</h1>
+                    <div class="course-detail-meta">
+                        <div class="meta-item">⭐ ${currentCourse.rating} rating</div>
+                        <div class="meta-item">👥 ${currentCourse.enrolledStudents} students</div>
+                        <div class="meta-item">📚 ${currentCourse.lessons} lessons</div>
+                        <div class="meta-item">⏱️ ${currentCourse.duration}</div>
+                        <div class="meta-item">📊 ${currentCourse.level}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render video player or locked overlay
+        function renderVideoPlayer() {
+            const container = document.getElementById('videoContainer');
+            const user = auth.getCurrentUser();
+
+            if (user) {
+                // User is logged in - show video player
+                container.innerHTML = `
+                    <div class="video-player-container">
+                        <iframe
+                            src="${currentCourse.videoUrl}"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                `;
+            } else {
+                // User is not logged in - show locked overlay
+                container.innerHTML = `
+                    <div class="locked-overlay">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                        <h2 style="color: var(--text-dark); margin-bottom: 1rem;">Login Required</h2>
+                        <p style="color: var(--text-gray); margin-bottom: 2rem;">Please login to access this course content</p>
+                        <a href="login.html" style="display: inline-block; padding: 15px 40px; background: var(--gradient-primary); color: white; text-decoration: none; border-radius: 50px; font-weight: 600;">
+                            Login Now
+                        </a>
+                        <p style="margin-top: 1.5rem; color: var(--text-gray);">
+                            Don't have an account? <a href="register.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">Sign up here</a>
+                        </p>
+                    </div>
+                `;
+            }
+        }
+
+        // Render enroll card
+        function renderEnrollCard() {
+            const card = document.getElementById('enrollCard');
+            const user = auth.getCurrentUser();
+
+            card.innerHTML = `
+                <div class="enroll-price">${currentCourse.isFree ? 'FREE' : currentCourse.price + ' PLN'}</div>
+                ${user ? '<button class="enroll-btn">Enrolled</button>' : '<button class="enroll-btn" onclick="window.location.href=\'login.html\'">Login to Enroll</button>'}
+                <div class="course-includes">
+                    <h4>This course includes:</h4>
+                    <ul class="includes-list">
+                        <li>${currentCourse.duration} of on-demand video</li>
+                        <li>${currentCourse.lessons} lessons</li>
+                        <li>Full lifetime access</li>
+                        <li>Access on mobile and desktop</li>
+                        <li>Certificate of completion</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        // Render syllabus
+        function renderSyllabus() {
+            const list = document.getElementById('syllabusList');
+            list.innerHTML = currentCourse.syllabus.map((item, index) => `
+                <li class="syllabus-item">
+                    <div>
+                        <strong>${index + 1}. ${item.title}</strong>
+                    </div>
+                    <span style="color: var(--text-gray);">${item.duration}</span>
+                </li>
+            `).join('');
+        }
+
+        // Render overview
+        function renderOverview() {
+            document.getElementById('courseOverviewText').textContent = currentCourse.description;
+        }
+
+        // Switch tabs
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // Show selected tab content
+            document.getElementById(tabName + '-content').classList.add('active');
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        // Logout
+        function logout() {
+            auth.logout();
+            window.location.reload();
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', initCoursePage);
+    </script>
+</body>
+</html>
