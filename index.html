@@ -17,13 +17,17 @@
                 <span class="logo-text">CloudScrapers</span>
             </div>
             <ul class="nav-menu" id="navMenu">
-                <li><a href="#about" class="nav-link active">About</a></li>
-                <li><a href="#courses" class="nav-link">Courses</a></li>
-                <li><a href="#vlogs" class="nav-link">Tech Vlogs</a></li>
-                <li><a href="#downloads" class="nav-link">Downloads</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><a href="#about" class="nav-link active" data-i18n="nav.about">About</a></li>
+                <li><a href="#courses" class="nav-link" data-i18n="nav.courses">Courses</a></li>
+                <li><a href="#vlogs" class="nav-link" data-i18n="nav.vlogs">Tech Vlogs</a></li>
+                <li><a href="#downloads" class="nav-link" data-i18n="nav.downloads">Downloads</a></li>
+                <li><a href="#contact" class="nav-link" data-i18n="nav.contact">Contact</a></li>
             </ul>
             <div class="nav-actions">
+                <button class="language-toggle" id="languageToggle" aria-label="Switch language">
+                    <span class="lang-flag">🇬🇧</span>
+                    <span class="lang-text">EN</span>
+                </button>
                 <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
                     <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -52,9 +56,9 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <h1 class="hero-title">CloudScrapers</br>Empowering Your IT Journey</h1>
-            <p class="hero-subtitle">Expert Consulting & Training in Cloud, Security, Networking & Programming</p>
-            <a href="#about" class="cta-button">Learn More</a>
+            <h1 class="hero-title">CloudScrapers</br><span data-i18n="hero.title">Empowering Your IT Journey</span></h1>
+            <p class="hero-subtitle" data-i18n="hero.subtitle">Expert Consulting & Training in Cloud, Security, Networking & Programming</p>
+            <a href="#about" class="cta-button" data-i18n="hero.cta">Learn More</a>
         </div>
         <div class="hero-background"></div>
     </section>
@@ -62,7 +66,7 @@
     <!-- About Section -->
     <section id="about" class="section about-section">
         <div class="container">
-            <h2 class="section-title">About Us</h2>
+            <h2 class="section-title" data-i18n="about.title">About Us</h2>
             <div class="about-content">
                 <div class="logo-placeholder">
                     <div class="logo-box">
@@ -70,34 +74,34 @@
                     </div>
                 </div>
                 <div class="about-text">
-                    <h3>IT Consulting & Training Provider</h3>
-                    <p>
+                    <h3 data-i18n="about.heading">IT Consulting & Training Provider</h3>
+                    <p data-i18n="about.description">
                         We are a premier IT consulting and training company specializing in cutting-edge technologies
                         that power modern businesses. Our expertise spans across multiple domains, ensuring your
                         organization stays ahead in the rapidly evolving tech landscape.
                     </p>
                     <div class="tech-stack">
-                        <h4>Our Expertise:</h4>
+                        <h4 data-i18n="about.expertise">Our Expertise:</h4>
                         <div class="tech-grid">
                             <div class="tech-item">
                                 <div class="tech-icon">🌐</div>
-                                <h5>Networking</h5>
-                                <p>Advanced network architecture, security, and optimization</p>
+                                <h5 data-i18n="about.tech.networking.title">Networking</h5>
+                                <p data-i18n="about.tech.networking.desc">Advanced network architecture, security, and optimization</p>
                             </div>
                             <div class="tech-item">
                                 <div class="tech-icon">☁️</div>
-                                <h5>Cloud Computing</h5>
-                                <p>AWS, Azure, GCP design, deployment and management</p>
+                                <h5 data-i18n="about.tech.cloud.title">Cloud Computing</h5>
+                                <p data-i18n="about.tech.cloud.desc">AWS, Azure, GCP design, deployment and management</p>
                             </div>
                             <div class="tech-item">
                                 <div class="tech-icon">🔒</div>
-                                <h5>Security</h5>
-                                <p>Cybersecurity, compliance, and risk management</p>
+                                <h5 data-i18n="about.tech.security.title">Security</h5>
+                                <p data-i18n="about.tech.security.desc">Cybersecurity, compliance, and risk management</p>
                             </div>
                             <div class="tech-item">
                                 <div class="tech-icon">💻</div>
-                                <h5>Programming</h5>
-                                <p>Full-stack development and automation</p>
+                                <h5 data-i18n="about.tech.programming.title">Programming</h5>
+                                <p data-i18n="about.tech.programming.desc">Full-stack development and automation</p>
                             </div>
                         </div>
                     </div>
@@ -109,8 +113,8 @@
     <!-- Courses Section -->
     <section id="courses" class="section courses-section">
         <div class="container">
-            <h2 class="section-title">Our Free Courses</h2>
-            <p class="section-subtitle">Comprehensive training programs designed to elevate your skills</p>
+            <h2 class="section-title" data-i18n="courses.title">Our Free Courses</h2>
+            <p class="section-subtitle" data-i18n="courses.subtitle">Comprehensive training programs designed to elevate your skills</p>
             <div class="video-grid">
                 <div class="video-card">
                     <div class="video-wrapper">
@@ -163,7 +167,7 @@
                 </div>
             </div>
             <div class="channel-link">
-                <a href="https://www.youtube.com/@CloudScrapers" target="_blank" class="youtube-button">
+                <a href="https://www.youtube.com/@CloudScrapers" target="_blank" class="youtube-button" data-i18n="courses.channelButton">
                     Visit Our YouTube Channel to stay updated with new content!
                 </a>
             </div>
@@ -173,8 +177,8 @@
     <!-- Tech Vlogs Section -->
     <section id="vlogs" class="section vlogs-section">
         <div class="container">
-            <h2 class="section-title">Tech Vlogs</h2>
-            <p class="section-subtitle">Stay updated with the latest tech insights and industry trends</p>
+            <h2 class="section-title" data-i18n="vlogs.title">Tech Vlogs</h2>
+            <p class="section-subtitle" data-i18n="vlogs.subtitle">Stay updated with the latest tech insights and industry trends</p>
             <div class="video-grid">
                 <div class="video-card">
                     <div class="video-wrapper">
@@ -219,8 +223,8 @@
     <!-- Downloads Section -->
     <section id="downloads" class="section downloads-section">
         <div class="container">
-            <h2 class="section-title">Downloads</h2>
-            <p class="section-subtitle">Access our comprehensive guides and training materials</p>
+            <h2 class="section-title" data-i18n="downloads.title">Downloads</h2>
+            <p class="section-subtitle" data-i18n="downloads.subtitle">Access our comprehensive guides and training materials</p>
             <div class="downloads-grid">
                 <div class="download-card">
                     <div class="download-icon">📄</div>
@@ -265,52 +269,52 @@
     <!-- Contact Section -->
     <section id="contact" class="section contact-section">
         <div class="container">
-            <h2 class="section-title">Get In Touch</h2>
-            <p class="section-subtitle">Let's discuss how we can help transform your IT capabilities</p>
+            <h2 class="section-title" data-i18n="contact.title">Get In Touch</h2>
+            <p class="section-subtitle" data-i18n="contact.subtitle">Let's discuss how we can help transform your IT capabilities</p>
             <div class="contact-content">
                 <div class="contact-info">
                     <div class="info-item">
                         <div class="info-icon">📧</div>
                         <div class="info-text">
-                            <h4>Email</h4>
+                            <h4 data-i18n="contact.info.email">Email</h4>
                             <p>biuro@cloudscrapers.pl</p>
                         </div>
                     </div>
                     <div class="info-item">
                         <div class="info-icon">📱</div>
                         <div class="info-text">
-                            <h4>Phone</h4>
+                            <h4 data-i18n="contact.info.phone">Phone</h4>
                             <p>+48 570 681 488</p>
                         </div>
                     </div>
                     <div class="info-item">
                         <div class="info-icon">📍</div>
                         <div class="info-text">
-                            <h4>Location</h4>
+                            <h4 data-i18n="contact.info.location">Location</h4>
                             <p>Kielce/Kraków</p>
                         </div>
                     </div>
                     <div class="info-item">
                         <div class="info-icon">🕐</div>
                         <div class="info-text">
-                            <h4>Business Hours</h4>
-                            <p>Monday - Friday: 9:00 AM - 5:00 PM CET</p>
+                            <h4 data-i18n="contact.info.hours">Business Hours</h4>
+                            <p data-i18n="contact.info.hoursValue">Monday - Friday: 9:00 AM - 5:00 PM CET</p>
                         </div>
                     </div>
                 </div>
                 <div class="contact-form">
-                    <h3>Send us a message</h3>
+                    <h3 data-i18n="contact.form.heading">Send us a message</h3>
                     <form id="contactForm">
-                        <input type="text" placeholder="Your Name" required>
-                        <input type="email" placeholder="Your Email" required>
-                        <input type="text" placeholder="Subject" required>
-                        <textarea placeholder="Your Message" rows="5" required></textarea>
-                        <button type="submit" class="submit-button">Send Message</button>
+                        <input type="text" placeholder="Your Name" data-i18n="contact.form.namePlaceholder" required>
+                        <input type="email" placeholder="Your Email" data-i18n="contact.form.emailPlaceholder" required>
+                        <input type="text" placeholder="Subject" data-i18n="contact.form.subjectPlaceholder" required>
+                        <textarea placeholder="Your Message" rows="5" data-i18n="contact.form.messagePlaceholder" required></textarea>
+                        <button type="submit" class="submit-button" data-i18n="contact.form.submit">Send Message</button>
                     </form>
                 </div>
             </div>
             <div class="social-media">
-                <h2>Follow Us on Socl</h2>
+                <h2 data-i18n="contact.social">Follow Us on Social</h2>
                 <div class="social-links">
                     <a href="https://www.youtube.com/@CloudScrapers" target="_blank" class="social-link youtube">
                         <svg viewBox="0 0 24 24" fill="currentColor">
@@ -344,11 +348,12 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 CloudScrapers Michał Kot IT Consulting. All rights reserved.</p>
-            <p>Empowering businesses through technology education and expertise.</p>
+            <p data-i18n="footer.copyright">&copy; 2025 CloudScrapers Michał Kot IT Consulting. All rights reserved.</p>
+            <p data-i18n="footer.tagline">Empowering businesses through technology education and expertise.</p>
         </div>
     </footer>
 
+    <script src="translations.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
