@@ -19,11 +19,31 @@
                 </a>
             </div>
             <ul class="nav-menu" id="navMenu">
-                <li><a href="../index.html" class="nav-link">Home</a></li>
-                <li><a href="index.html" class="nav-link active">Courses</a></li>
-                <li><a href="../index.html#contact" class="nav-link">Contact</a></li>
+                <li><a href="../index.html" class="nav-link" data-i18n="nav.home">Home</a></li>
+                <li><a href="index.html" class="nav-link active" data-i18n="nav.courses">Courses</a></li>
+                <li><a href="../index.html#contact" class="nav-link" data-i18n="nav.contact">Contact</a></li>
             </ul>
             <div class="nav-actions">
+                <button class="language-toggle" id="languageToggle" aria-label="Switch language">
+                    <span class="lang-flag">🇬🇧</span>
+                    <span class="lang-text">EN</span>
+                </button>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="moon-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
                 <div id="userMenuContainer"></div>
                 <div class="hamburger" id="hamburger">
                     <span></span>
@@ -36,15 +56,15 @@
 
     <!-- Main Content -->
     <div class="platform-container">
-        <h1 class="section-title">Browse Our Courses</h1>
-        <p class="section-subtitle" style="text-align: center; max-width: 700px; margin: 0 auto 2rem;">
+        <h1 class="section-title" data-i18n="platform.title">Browse Our Courses</h1>
+        <p class="section-subtitle" style="text-align: center; max-width: 700px; margin: 0 auto 2rem;" data-i18n="platform.subtitle">
             Explore our comprehensive library of IT training courses. All users can browse, but you need to be logged in to access course content.
         </p>
 
         <!-- Filters -->
         <div class="filters" id="filters">
-            <button class="filter-btn active" data-filter="all">All Courses</button>
-            <button class="filter-btn" data-filter="free">Free Courses</button>
+            <button class="filter-btn active" data-filter="all" data-i18n="platform.allCourses">All Courses</button>
+            <button class="filter-btn" data-filter="free" data-i18n="platform.freeCourses">Free Courses</button>
             <button class="filter-btn" data-filter="Cloud Computing">Cloud Computing</button>
             <button class="filter-btn" data-filter="Security">Security</button>
             <button class="filter-btn" data-filter="Programming">Programming</button>
@@ -58,13 +78,15 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 CloudScrapers Michał Kot IT Consulting. All rights reserved.</p>
-            <p>Learn, Grow, Succeed with our expert-led courses.</p>
+            <p data-i18n="footer.copyright">&copy; 2025 CloudScrapers Michał Kot IT Consulting. All rights reserved.</p>
+            <p data-i18n="footer.tagline">Learn, Grow, Succeed with our expert-led courses.</p>
         </div>
     </footer>
 
     <script src="auth.js"></script>
     <script src="courses-data.js"></script>
+    <script src="platform-translations.js"></script>
+    <script src="platform-common.js"></script>
     <script>
         // Initialize platform
         function initPlatform() {
