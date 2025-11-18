@@ -4,7 +4,8 @@ const platformTranslations = {
         nav: {
             home: "Home",
             courses: "Courses",
-            contact: "Contact"
+            contact: "Contact",
+            support: "Support"
         },
         platform: {
             title: "Browse Our Courses",
@@ -13,7 +14,30 @@ const platformTranslations = {
             allCourses: "All Courses",
             freeCourses: "Free Courses",
             enrolled: "Enrolled",
-            loginToEnroll: "Login to Enroll"
+            loginToEnroll: "Login to Enroll",
+            comingSoonTitle: "Exciting Courses Coming Soon!",
+            comingSoonMessage: "We're working hard to bring you high-quality IT training courses in Cloud Computing, Security, Networking, and Programming. Our expert-led courses will be available soon. Stay tuned!",
+            comingSoonContact: "Have questions? Visit our Support page to get in touch."
+        },
+        support: {
+            title: "Get Support",
+            subtitle: "Have questions? We're here to help you with your learning journey",
+            info: {
+                email: "Email",
+                phone: "Phone",
+                location: "Location",
+                hours: "Support Hours",
+                hoursValue: "Monday - Friday: 9:00 AM - 5:00 PM CET"
+            },
+            form: {
+                heading: "Send us a message",
+                namePlaceholder: "Your Name",
+                emailPlaceholder: "Your Email",
+                subjectPlaceholder: "Subject",
+                messagePlaceholder: "Your Message",
+                submit: "Send Message",
+                successMessage: "Thank you for your message! We will get back to you soon."
+            }
         },
         course: {
             rating: "rating",
@@ -70,7 +94,8 @@ const platformTranslations = {
         nav: {
             home: "Strona główna",
             courses: "Kursy",
-            contact: "Kontakt"
+            contact: "Kontakt",
+            support: "Wsparcie"
         },
         platform: {
             title: "Przeglądaj nasze kursy",
@@ -79,7 +104,30 @@ const platformTranslations = {
             allCourses: "Wszystkie kursy",
             freeCourses: "Darmowe kursy",
             enrolled: "Zapisany",
-            loginToEnroll: "Zaloguj się, aby zapisać"
+            loginToEnroll: "Zaloguj się, aby zapisać",
+            comingSoonTitle: "Ekscytujące kursy wkrótce!",
+            comingSoonMessage: "Ciężko pracujemy, aby dostarczyć Ci wysokiej jakości kursy szkoleniowe IT z zakresu Cloud Computing, bezpieczeństwa, sieci i programowania. Nasze kursy prowadzone przez ekspertów będą wkrótce dostępne. Bądź na bieżąco!",
+            comingSoonContact: "Masz pytania? Odwiedź naszą stronę Wsparcia, aby skontaktować się z nami."
+        },
+        support: {
+            title: "Uzyskaj wsparcie",
+            subtitle: "Masz pytania? Jesteśmy tutaj, aby pomóc Ci w Twojej nauce",
+            info: {
+                email: "E-mail",
+                phone: "Telefon",
+                location: "Lokalizacja",
+                hours: "Godziny wsparcia",
+                hoursValue: "Poniedziałek - Piątek: 9:00 - 17:00 CET"
+            },
+            form: {
+                heading: "Wyślij nam wiadomość",
+                namePlaceholder: "Twoje imię",
+                emailPlaceholder: "Twój e-mail",
+                subjectPlaceholder: "Temat",
+                messagePlaceholder: "Twoja wiadomość",
+                submit: "Wyślij wiadomość",
+                successMessage: "Dziękujemy za wiadomość! Wkrótce się z Tobą skontaktujemy."
+            }
         },
         course: {
             rating: "ocena",
