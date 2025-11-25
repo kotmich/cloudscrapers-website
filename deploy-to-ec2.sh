@@ -20,6 +20,15 @@ WEB_ROOT="/var/www/cloudscrapers"
 NGINX_CONF="/etc/nginx/conf.d/cloudscrapers.conf"
 BACKUP_DIR="/var/backups/cloudscrapers"
 
+# Detect Nginx group (nginx on Amazon Linux, www-data on Ubuntu)
+if getent group nginx > /dev/null 2>&1; then
+    NGINX_GROUP="nginx"
+elif getent group www-data > /dev/null 2>&1; then
+    NGINX_GROUP="www-data"
+else
+    NGINX_GROUP="nginx"  # Default fallback
+fi
+
 # Functions
 print_success() {
     echo -e "${GREEN}✓ $1${NC}"
@@ -40,6 +49,10 @@ if [[ $EUID -eq 0 ]]; then
 fi
 
 print_info "Starting deployment process..."
+print_info "Deployment user: $DEPLOY_USER"
+print_info "Nginx group: $NGINX_GROUP"
+print_info "Web root: $WEB_ROOT"
+echo ""
 
 # Step 1: Update system packages
 print_info "Updating system packages..."
@@ -81,7 +94,7 @@ sudo chown -R $DEPLOY_USER:$DEPLOY_USER $BACKUP_DIR
 print_success "Backup directory created"
 
 # Step 6: Backup existing site (if exists)
-if [ -d "$WEB_ROOT/index.html" ]; then
+if [ -f "$WEB_ROOT/index.html" ]; then
     print_info "Backing up existing site..."
     TIMESTAMP=$(date +%Y%m%d_%H%M%S)
     sudo tar -czf "$BACKUP_DIR/backup_$TIMESTAMP.tar.gz" -C $WEB_ROOT .
@@ -91,9 +104,22 @@ fi
 # Step 7: Copy website files
 print_info "Copying website files..."
 # Assuming the script is run from the repository directory
-cp -r index.html styles.css script.js translations.js img platform $WEB_ROOT/
-sudo chown -R $DEPLOY_USER:nginx $WEB_ROOT
+# First, ensure we have the files to copy
+if [ ! -f "index.html" ]; then
+    print_error "index.html not found. Please run this script from the repository root directory."
+    exit 1
+fi
+
+# Copy files using sudo to avoid permission issues
+sudo cp -r index.html styles.css script.js translations.js $WEB_ROOT/
+sudo cp -r img platform $WEB_ROOT/ 2>/dev/null || true
+
+# Set proper ownership and permissions
+sudo chown -R $DEPLOY_USER:$NGINX_GROUP $WEB_ROOT
 sudo chmod -R 755 $WEB_ROOT
+sudo find $WEB_ROOT -type f -exec chmod 644 {} \;
+sudo find $WEB_ROOT -type d -exec chmod 755 {} \;
+
 print_success "Website files copied"
 
 # Step 8: Configure Nginx
@@ -111,8 +137,12 @@ fi
 # Step 9: Create custom error pages
 print_info "Creating custom error pages..."
 
+# Create temporary error pages first
+TEMP_404="/tmp/404.html"
+TEMP_50X="/tmp/50x.html"
+
 # 404 Error Page
-cat > $WEB_ROOT/404.html << 'EOF'
+cat > $TEMP_404 << 'EOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -167,7 +197,7 @@ cat > $WEB_ROOT/404.html << 'EOF'
 EOF
 
 # 50x Error Page
-cat > $WEB_ROOT/50x.html << 'EOF'
+cat > $TEMP_50X << 'EOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -221,7 +251,15 @@ cat > $WEB_ROOT/50x.html << 'EOF'
 </html>
 EOF
 
-sudo chown $DEPLOY_USER:nginx $WEB_ROOT/404.html $WEB_ROOT/50x.html
+# Copy error pages to web root with sudo
+sudo cp $TEMP_404 $WEB_ROOT/404.html
+sudo cp $TEMP_50X $WEB_ROOT/50x.html
+sudo chown $DEPLOY_USER:$NGINX_GROUP $WEB_ROOT/404.html $WEB_ROOT/50x.html
+sudo chmod 644 $WEB_ROOT/404.html $WEB_ROOT/50x.html
+
+# Clean up temporary files
+rm -f $TEMP_404 $TEMP_50X
+
 print_success "Custom error pages created"
 
 # Step 10: Enable and start Nginx
@@ -252,7 +290,7 @@ fi
 
 # Step 13: Setup log rotation
 print_info "Setting up log rotation..."
-sudo tee /etc/logrotate.d/nginx-cloudscrapers > /dev/null << 'EOF'
+sudo tee /etc/logrotate.d/nginx-cloudscrapers > /dev/null << EOF
 /var/log/nginx/cloudscrapers-*.log {
     daily
     missingok
@@ -260,10 +298,10 @@ sudo tee /etc/logrotate.d/nginx-cloudscrapers > /dev/null << 'EOF'
     compress
     delaycompress
     notifempty
-    create 0640 nginx adm
+    create 0640 $NGINX_GROUP adm
     sharedscripts
     postrotate
-        [ -f /var/run/nginx.pid ] && kill -USR1 `cat /var/run/nginx.pid`
+        [ -f /var/run/nginx.pid ] && kill -USR1 \`cat /var/run/nginx.pid\`
     endscript
 }
 EOF
