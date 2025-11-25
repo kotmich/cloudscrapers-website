@@ -101,7 +101,32 @@ sudo setenforce 0
 nginx: configuration file /etc/nginx/nginx.conf test failed
 ```
 
+**Common Error: log_format directive not allowed**
+```
+nginx: [emerg] "log_format" directive is not allowed here in /etc/nginx/conf.d/cloudscrapers.conf:64
+```
+
 **Solution:**
+This error occurs because `log_format` can only be defined in the `http` context (main nginx.conf), not in server blocks or conf.d includes.
+
+**Quick Fix - Use default log format:**
+The latest nginx-alb.conf uses the default 'combined' format. Pull the latest changes:
+```bash
+cd ~/cloudscrapers-website
+git pull
+sudo cp nginx-alb.conf /etc/nginx/conf.d/cloudscrapers.conf
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+**Optional - Install custom ALB log format:**
+If you want enhanced logging with ALB headers (X-Forwarded-For, X-Amzn-Trace-Id, etc.):
+```bash
+cd ~/cloudscrapers-website
+sudo ./install-custom-log-format.sh
+```
+
+**Other Configuration Issues:**
 ```bash
 # Check detailed error
 sudo nginx -t
